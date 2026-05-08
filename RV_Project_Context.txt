@@ -1,0 +1,212 @@
+PROJETO_RV – CONTEXTO GERAL DO PROJETO
+
+1. VISÃO GERAL
+Projeto acadêmico de Realidade Virtual (VR), desenvolvido na Unity (2022.3 LTS),
+com foco educacional e narrativo. O projeto consiste em uma experiência exploratória
+onde o jogador visita ambientes inspirados em diferentes continentes e interage
+com NPCs que contam histórias culturais/folclóricas.
+
+O projeto NÃO está finalizado; encontra-se em fase de desenvolvimento estrutural
+e implementação dos sistemas principais.
+
+--------------------------------------------------
+
+2. CONCEITO DO PROJETO
+
+Nome do Projeto:
+- Projeto_RV (nome técnico do projeto Unity)
+
+Ideia Central:
+- Experiência narrativa e exploratória
+- Jogador como observador/explorador
+- Interação simples com NPCs para ouvir histórias
+
+Continentes / Cenas:
+- Europa (temática medieval – cavaleiro)
+- América (Brasil)
+- Ásia (Japão)
+- África (Egito)
+
+Cada cena contém:
+- Mesmo Player
+- Mesmo sistema de UI
+- Mesmo sistema de interação
+- Um NPC específico
+- Ambiente temático diferente
+
+--------------------------------------------------
+
+3. TECNOLOGIA UTILIZADA
+
+Engine:
+- Unity 2022.3.62f3
+- Built-in Render Pipeline
+
+Modelagem:
+- Blender
+- Modelos inicialmente estáticos
+- GLB atualmente
+- Planejamento futuro: FBX (rig, textura, UV, heat map)
+
+Áudio:
+- Storytelling (voz do NPC)
+- SFX de reação (interrupção e retomada)
+
+--------------------------------------------------
+
+4. PLAYER (STATUS ATUAL)
+
+Player completamente funcional:
+- Movimento (andar, pular)
+- Mouse Look (yaw no Player, pitch na Camera)
+- Sistema desktop (sem headset VR)
+
+Hierarquia do Player:
+- Player
+  - Head
+    - Player_Cam (Main Camera)
+  - Player_Body
+
+Player convertido em prefab:
+- Player.prefab
+
+--------------------------------------------------
+
+5. UI / HUD
+
+Sistema de UI simples:
+- Canvas (Screen Space - Overlay)
+- Crosshair central
+
+Crosshair:
+- PNG 64x64
+- Importado como Sprite (2D and UI)
+- Redimensionado via RectTransform
+
+UI convertida em prefab:
+- UI_HUD.prefab
+
+--------------------------------------------------
+
+6. SISTEMA DE INTERAÇÃO
+
+Interação baseada em:
+- Raycast saindo da Player_Cam
+- Mira via crosshair
+- Tecla E para interagir
+
+Quando o jogador mira no NPC:
+- Crosshair muda de cor
+- Interação habilitada
+
+--------------------------------------------------
+
+7. NPC – ARQUITETURA ATUAL
+
+Modelos de NPC importados como Prefab (GLB).
+Para evitar problemas de configuração, foi adotado o padrão de Wrapper Prefab.
+
+Prefab principal de NPC:
+- NPC_Model.prefab
+
+Hierarquia do NPC_Model:
+- NPC_Model (root)
+  - ModelRoot (onde o prefab GLB é encaixado)
+  - SpeakerPoint (ponto de emissão de áudio)
+
+Configuração do NPC_Model:
+- Layer: Interactable
+- Collider (Capsule) no root
+- Script: NpcStory
+
+--------------------------------------------------
+
+8. SCRIPT NpcStory – FUNCIONALIDADE
+
+Sistema de storytelling baseado em estados:
+
+Estados:
+- Idle: história parada
+- PlayingStory: história tocando
+- Paused: história pausada após interrupção
+- PlayingSfx: tocando SFX de reação
+
+Comportamento:
+- Primeira interação: inicia a história
+- Interação durante a história:
+  - Pausa a história
+  - Toca SFX de interrupção (ex: "Alguma dúvida?")
+- Próxima interação:
+  - Toca SFX de retomada (ex: "Continuando...")
+  - Retoma a história do ponto pausado
+- Ao terminar a história:
+  - Nova interação reinicia do começo
+
+O áudio é emitido a partir do SpeakerPoint.
+
+--------------------------------------------------
+
+9. PREFABS CRIADOS (OBRIGATÓRIOS)
+
+Prefabs principais do projeto:
+- Player.prefab
+- UI_HUD.prefab
+- NPC_Model.prefab
+- (Opcional) GameManager.prefab
+
+Regra geral:
+- Prefab = comportamento e estrutura
+- Cena = conteúdo (modelo, áudio, ambiente)
+
+--------------------------------------------------
+
+10. CENAS
+
+Cenas existentes:
+- Scene_Europe
+- Scene_America
+- Scene_Asia
+- Scene_Africa
+
+Todas as cenas compartilham:
+- Player.prefab
+- UI_HUD.prefab
+- Sistema de interação
+
+Diferenças entre cenas:
+- Ambiente visual
+- Modelo do NPC
+- Áudios do NPC
+
+--------------------------------------------------
+
+11. STATUS ATUAL DO PROJETO
+
+✅ Player funcional
+✅ Mouse look funcional
+✅ Crosshair funcional
+✅ Interação com NPC funcionando
+✅ Storytelling com pausa e SFX funcionando
+✅ Importação de GLB funcionando
+✅ Estrutura de prefabs definida
+✅ Cenas duplicadas a partir de base
+
+🚧 Em andamento / Próximos passos:
+- Montagem mínima dos ambientes por continente
+- Ajuste fino de colliders e escala dos NPCs
+- Props narrativos no ambiente
+- Triggers ambientais (saudações ao entrar em áreas)
+- Polimento visual no Blender (futuro)
+
+--------------------------------------------------
+
+12. FILOSOFIA DO PROJETO
+
+- Projeto acadêmico
+- Escopo controlado
+- Funcionar > bonito
+- Estrutura sólida antes de decoração
+- Desktop first, VR como camada futura
+
+--------------------------------------------------
+FIM DO CONTEXTO
