@@ -81,3 +81,22 @@ crashlytics-build.properties
 ehthumbs.db
 Thumbs.db
 desktop.ini
+
+# JetBrains Rider
+.idea/
+
+# Claude Code local settings (per-machine)
+.claude/settings.local.json
+
+# Python artifacts (Project_essay/md_to_docx.py)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Office temporary/lock files (Word, Excel) - e.g. ~$Artigo_SBC.docx
+~$*.doc*
+~$*.xls*
+~$*.ppt*
+*.~lock.*#

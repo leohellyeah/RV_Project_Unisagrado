@@ -14,7 +14,7 @@ Uma experiência **exploratória e narrativa**, em que o jogador funciona como o
 
 | Cena | Tema |
 |------|------|
-| `Scene_Europe`  | Europa medieval (cavaleiro) |
+| `Scene_Europe`  | Europa medieval|
 | `Scene_America` | Brasil |
 | `Scene_Asia`    | Japão |
 | `Scene_Africa`  | Egito |

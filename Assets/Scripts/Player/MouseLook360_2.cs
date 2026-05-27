@@ -6,7 +6,7 @@ public class MouseLook360_2 : MonoBehaviour
     public Transform player; // pode deixar vazio: o script tenta achar sozinho
 
     [Header("Sensibilidade")]
-    public float sensitivity = 200f;
+    public float sensitivity = 1600f;
 
     [Header("Limite vertical (pitch)")]
     public float minPitch = -85f;
