@@ -221,6 +221,8 @@ Como evolução natural, três frentes de trabalho futuro são identificadas:
 
 A arquitetura modular adotada — com prefabs reutilizáveis, máquina de estados desacoplada da apresentação visual e navegação baseada em interface comum — foi pensada precisamente para suportar essas extensões. O projeto, em seu estado atual, oferece um *baseline* funcional e auditável a partir do qual essas evoluções podem ser conduzidas de forma incremental.
 
+**Disponibilidade.** O código-fonte do projeto está disponível em repositório público no GitHub, em https://github.com/leohellyeah/RV_Project_Unisagrado. Uma demonstração em vídeo do protótipo em execução, mostrando a navegação entre cenas e o ciclo de iniciar, interromper e retomar a narrativa, pode ser acessada em https://youtu.be/X3BIjKRZZkE.
+
 ---
 
 ## Referências
