@@ -101,7 +101,12 @@ public static class VrRigSetup
 
         origin.Camera = cam;
         origin.CameraFloorOffsetObject = offset;
-        origin.RequestedTrackingOriginMode = XROrigin.TrackingOriginMode.Floor;
+        // Device mode + Y offset = altura do "olho" constante (1.7m, mesma do player
+        // desktop). Em Floor mode a camera fica em y=0 se o HMD/simulador nao reportar
+        // a altura (caso da fallback EditorMouseLook), causando spawn enfiado no chao.
+        origin.RequestedTrackingOriginMode = XROrigin.TrackingOriginMode.Device;
+        origin.CameraYOffset = 1.7f;
+        offset.transform.localPosition = new Vector3(0f, 1.7f, 0f); // garante a altura em Edit time
 
         camGO.AddComponent<VrGazeInteractor>();
         camGO.AddComponent<EditorMouseLook>();   // fallback p/ olhar com mouse no Editor sem simulador
