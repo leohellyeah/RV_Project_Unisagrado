@@ -30,7 +30,7 @@ namespace ProjetoRV.VR
             rig = transform.parent ? transform.parent.parent : null;
 
             // se existe HMD (simulador ou headset real), TPD dirige; este script fica fora.
-            if (XRHMD.current != null)
+            if (InputSystem.GetDevice<XRHMD>() != null)
             {
                 enabled = false;
                 return;
