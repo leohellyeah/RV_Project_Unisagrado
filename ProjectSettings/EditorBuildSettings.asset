@@ -20,4 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Cenas/Scene_Africa.unity
     guid: 285a012aa6f0ad949a0b9e49de05aa89
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: b9b521d2329dffa48b6cd2da368942c6, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: a6b23fdb7be8b6c4e9f51b7ff02ec88f, type: 2}

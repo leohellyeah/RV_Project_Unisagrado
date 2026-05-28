@@ -27,6 +27,15 @@ namespace ProjetoRV.NPC
         [Header("Audio Settings")]
         public bool spatial3D = true;
 
+        [Tooltip("Volume base do NPC (0-1). Suba/baixe pra equalizar as vozes.")]
+        [Range(0f, 1f)] public float volume = 1f;
+
+        [Tooltip("Distância (m) em que o áudio ainda toca no volume máximo.")]
+        public float hearFullDistance = 7f;
+
+        [Tooltip("Distância (m) além da qual o áudio some por completo.")]
+        public float hearMaxDistance = 40f;
+
         [Header("Behavior")]
         [Tooltip("If true, after the story ends, a new interaction starts it from the beginning.")]
         public bool restartAfterEnd = true;
@@ -58,6 +67,11 @@ namespace ProjetoRV.NPC
         void ConfigureSource(AudioSource src)
         {
             src.spatialBlend = spatial3D ? 1f : 0f;
+            src.volume = volume;
+            src.dopplerLevel = 0f;                       // sem alteracao de tom ao andar
+            src.rolloffMode = AudioRolloffMode.Linear;   // queda previsivel (nao despenca apos 1m)
+            src.minDistance = hearFullDistance;          // volume cheio dentro desse raio
+            src.maxDistance = hearMaxDistance;           // some alem desse raio
         }
 
         public void Interact()
