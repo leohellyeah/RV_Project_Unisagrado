@@ -2,7 +2,7 @@
 
 Projeto acadêmico de **Realidade Virtual** desenvolvido em **Unity 2022.3 LTS**, com foco educacional e narrativo. O jogador assume o papel de um explorador que visita ambientes inspirados em diferentes continentes e interage com NPCs que contam histórias culturais e folclóricas.
 
-> **Status:** em desenvolvimento estrutural. Sistemas principais funcionando; ambientes e polimento ainda em andamento.
+> **🚧 Early Build VR (entrega P2 — 2026-05).** Esta versão **já inclui suporte mínimo a VR** (câmera *head-tracked*, locomoção por analógico, interação por *gaze* + gatilho) e um **APK** para **Meta Quest**. Como **não há hardware disponível para testar/refinar**, **bugs e crashes são esperados** no headset — trate como *early build*. O build **desktop original (WASD + mouse) segue funcional** como *fallback*.
 
 ---
 
@@ -28,21 +28,21 @@ Todas as cenas compartilham o mesmo Player, UI e sistema de interação — o qu
 - **Engine:** Unity 2022.3.62f3 (Built-in Render Pipeline)
 - **Modelagem:** Blender (modelos GLB; futura migração para FBX com rig, UV e textura)
 - **Áudio:** narração do NPC + SFX de interrupção/retomada
-- **Plataforma:** Desktop first; camada VR planejada como evolução futura
+- **Plataforma:** Desktop (WASD + mouse) **+ VR mínimo** via OpenXR / Meta Quest (*early build*); testável no Editor pelo XR Device Simulator sem necessidade de headset
 
 ---
 
 ## Sistemas Implementados
 
 ### Player
-Movimento (andar, pular), mouse look (yaw no Player, pitch na câmera). Empacotado como `Player.prefab` com a hierarquia:
+Movimento (andar, pular, sprint), mouse look (yaw na raiz, pitch na câmera). Estrutura enxuta após refator:
 
 ```
-Player
-├── Head
-│   └── Player_Cam (Main Camera)
-└── Player_Body
+Player (CharacterController, PlayerMovementCC_2, MouseLook360_2)
+└── Main Camera (PlayerRayInteractor, AudioListener, Crosshair UI no HUD)
 ```
+
+No modo VR, esse rig é **neutralizado** (mantido como fallback) e um `XR Origin (VR)` toma o lugar — câmera *head-tracked* + analógico (locomoção) + *gaze* (interação).
 
 ### UI / HUD
 Canvas em Screen Space – Overlay com **crosshair central** (sprite 64x64). Empacotado como `UI_HUD.prefab`.
@@ -84,18 +84,48 @@ O script `NpcStory` é uma máquina de estados:
 
 ## Status
 
-**Pronto**
-- Player, mouse look e crosshair funcionais
-- Interação com NPC e storytelling com pausa/SFX
-- Importação de GLB funcionando
-- Estrutura de prefabs e cenas-base definidas
+**Pronto (P2 — 2026-05)**
+- Player + mouse look + crosshair + interação por *raycast*
+- Storytelling com pausa/SFX e máquina de estados (`NpcStory`)
+- 4 cenas-continente + `Scene_Lobby` central com 4 portais e *spawn* contextual no retorno
+- NPCs com áudios narrados próprios (Knight, Curupira, Geisha, Pharaoh) — falloff Linear (7m / 40m)
+- Paleta de cores + *props* placeholder por cena via `SceneDresser` (Editor)
+- **VR mínimo** (OpenXR + XR Origin head-tracked + `VrGazeInteractor` + `VrLocomotion`) — *early build*
+- **Build APK** para Meta Quest configurado via `VrApkBuilder` (IL2CPP / ARM64 / Vulkan / Single Pass Instanced)
+- Artigo SBC (`Project_essay/`) com pipeline `md` → `docx` → `pdf` automatizado
 
-**Em andamento**
-- Montagem mínima dos ambientes por continente
-- Ajuste fino de colliders e escala dos NPCs
-- Props narrativos no ambiente
-- Triggers ambientais (saudações ao entrar em áreas)
-- Polimento visual no Blender
+**Conhecido / em aberto**
+- Sem texturas/assets de ambiente "reais" — só *props* placeholder por primitivas (cubos, esferas, pirâmide procedural)
+- Em VR: `LobbySpawnController` não reposiciona o XR Origin (você reaparece sempre no *spawn* fixo da cena)
+- Em VR: HUD em *screen-space* (crosshair) fica estranho no headset
+- Refino do VR depende de teste em hardware real
+
+---
+
+## Como rodar
+
+### Desktop (Editor)
+1. Abra `Assets/Cenas/Scene_Lobby.unity`.
+2. **Play.** WASD para mover, mouse para olhar, **E** para interagir, **Shift** para correr, **Space** para pular.
+
+### VR no Editor (sem headset, via XR Device Simulator)
+1. `Tools > VR Project > Setup VR Rig (current scene)` (ou *in ALL Scenes* para aplicar nas 5).
+2. Arraste o prefab `XR Device Simulator` de `Assets/Samples/XR Interaction Toolkit/.../` para a cena.
+3. **Play.** Mouse = cabeça, WASD = mover, botão esquerdo/direito do mouse = gatilho dos controles esquerdo/direito (interage com NPC/portal).
+
+### VR no Meta Quest (early build, APK)
+1. `Tools > VR Project > Build VR APK (Quest)` — gera `Builds/Android/ProjetoRV-VR.apk`.
+2. Habilite modo desenvolvedor no Quest (via Meta Quest Developer Hub / app Meta no celular).
+3. Sideload do APK por [SideQuest](https://sidequestvr.com/) ou `adb install`.
+
+### Utilitários de Editor (menu `Tools > VR Project`)
+| Menu | O que faz |
+|------|-----------|
+| `Dress ALL Scenes` / `Dress LOBBY` | Aplica paleta de cores + *props* placeholder |
+| `Remove Dressing (current)` | Reverte o *dressing* da cena aberta |
+| `Setup VR Rig (current scene)` / `... in ALL Scenes` | Monta o `XR Origin (VR)` |
+| `Remove VR Rig (current)` | Reverte o rig VR e reativa o player desktop |
+| `Configure Project for Quest` / `Build VR APK (Quest)` | Configura *Player Settings* + builda APK |
 
 ---
 
@@ -103,4 +133,12 @@ O script `NpcStory` é uma máquina de estados:
 
 - Projeto acadêmico, **escopo controlado**
 - **Funcionar antes de embelezar** — estrutura sólida antes de decoração
-- **Desktop first**, VR como camada futura
+- Desktop como base sólida; **VR adicionado em paralelo** (*early build*) sem quebrar o desktop
+
+---
+
+## Créditos
+
+**Equipe (Unisagrado):** Leonardo Buratto de Assis · Jennifer Leonora Galina Vieira · Leonardo Conti
+
+**Disciplina:** Realidade Virtual — Centro Universitário Sagrado Coração (Unisagrado), 2026/1
