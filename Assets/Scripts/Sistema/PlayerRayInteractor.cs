@@ -19,6 +19,17 @@ namespace ProjetoRV.Systems
 
         private IInteractable currentTarget;
 
+        void Awake()
+        {
+            // Se a referencia nao foi setada no Inspector (caso atual do Player.prefab),
+            // acha o crosshair do UI_HUD por nome em runtime. Robusto + zero clique manual.
+            if (!crosshairImage)
+            {
+                var go = GameObject.Find("Crosshair");
+                if (go) crosshairImage = go.GetComponent<Image>();
+            }
+        }
+
         void Update()
         {
             Ray ray = new Ray(transform.position, transform.forward);
