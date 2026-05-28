@@ -104,6 +104,7 @@ public static class VrRigSetup
         origin.RequestedTrackingOriginMode = XROrigin.TrackingOriginMode.Floor;
 
         camGO.AddComponent<VrGazeInteractor>();
+        camGO.AddComponent<EditorMouseLook>();   // fallback p/ olhar com mouse no Editor sem simulador
         var loco = originGO.AddComponent<VrLocomotion>();
         loco.head = camGO.transform;
 
